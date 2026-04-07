@@ -32,6 +32,11 @@ void add_node(struct node a, struct list A){
     while (i->next != j){
         i = i->next;
     }
+    if(j->data.time < a.data.time){
+        a.next = NULL;
+        j->next = &a;
+        return;
+    }
     i->next = &a;
     a.next = j;
     return;

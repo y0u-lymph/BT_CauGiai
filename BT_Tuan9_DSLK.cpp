@@ -106,11 +106,14 @@ void deleteNode(int maSV, List &ListSV){
 void xoaCungNgaySinh(List &ListSV){
     bool found = false;
     for (Node* i = ListSV.first; i != NULL;){
-        for (Node* j = i->next; j != NULL; j = j->next){
+        for (Node* j = i->next; j != NULL;){
             if (sameDate(i->data.ngaySinh, j->data.ngaySinh)){
-                deleteNode(j->data.maSV, ListSV);
+                Node* temp = j;
+                j = j->next;
+                deleteNode(temp->data.maSV, ListSV);
                 found = true;
             }
+            else j = j->next;
         }
         if(found){
             Node* temp = i;

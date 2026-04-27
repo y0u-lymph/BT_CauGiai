@@ -4,7 +4,7 @@ struct Ngay{
 	int ngay, thang, nam;
 };
 struct SinhVien{
-	char maSV[9];
+	int maSV;
 	char hoTen[50];
 	bool gioiTinh;
 	Ngay ngaySinh;
@@ -35,11 +35,70 @@ void nhapSV(SinhVien &sv){
     cout << "Lop: "; cin.getline(sv.lop, 12);
     cout << "Khoa: "; cin.getline(sv.khoa, 7);
 }
-void tracuuSV(SinhVien sv){
+void xuatSV(SinhVien sv){
     cout << sv.maSV << " | " << sv.hoTen << " | "
          << sv.ngaySinh.ngay << "/" << sv.ngaySinh.thang << "/" << sv.ngaySinh.nam
          << endl;
 }
+void add_node(struct Node a, struct List A)//Them va sap xep tang dan
+{
+    if(A.first->data.maSV >= a.data.maSV){
+        a.next = A.first;
+        A.first = &a;
+        return;
+    }
+    struct Node* i = A.first;
+    struct Node* j = A.first;
+    while(j->next != NULL){
+        if(j->data.maSV >= a.data.maSV)
+            break;
+        j = j->next;
+    }
+    if(j == A.first){
+        A.first->next = &a;
+        return;
+    }
+    while (i->next != j){
+        i = i->next;
+    }
+    if(j->data.maSV < a.data.maSV){
+        a.next = NULL;
+        j->next = &a;
+        return;
+    }
+    i->next = &a;
+    a.next = j;
+    return;
+}
+bool sameDate(Ngay a, Ngay b) {
+    return (a.ngay == b.ngay && a.thang == b.thang && a.nam == b.nam);
+}
+void timCungNgaySinh(List ListSV, SinhVien sv){
+    bool found = false;
+    for (Node* i = ListSV.first; i != NULL; i = i->next){
+        if (sameDate(i->data.ngaySinh, sv.ngaySinh)){
+            xuatSV(i->data);
+            found = true;
+        }
+    }
+    if(found) cout << "Khong tim thay sinh vien cung ngay sinh.\n";
+}
+void deleteNode(SinhVien sv, List &ListSV){
+    Node* prev = NULL;
+    for (Node* i = ListSV.first; i != NULL; i = i->next){
+        if (i->data.maSV == sv.maSV){
+            if (prev == NULL) {
+                ListSV.first = i->next;
+            } else {
+                prev->next = i->next;
+            }
+            delete i;
+            return;
+        }
+        prev = i;
+    }
+}
+
 int main(){
-	struct List ListSV;
+	struct List ListSV[100];
 }

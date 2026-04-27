@@ -81,24 +81,48 @@ void timCungNgaySinh(List ListSV, SinhVien sv){
             found = true;
         }
     }
-    if(found) cout << "Khong tim thay sinh vien cung ngay sinh.\n";
+    if(!found) cout << "Khong tim thay sinh vien cung ngay sinh.\n";
 }
-void deleteNode(SinhVien sv, List &ListSV){
-    Node* prev = NULL;
-    for (Node* i = ListSV.first; i != NULL; i = i->next){
-        if (i->data.maSV == sv.maSV){
-            if (prev == NULL) {
-                ListSV.first = i->next;
-            } else {
-                prev->next = i->next;
-            }
-            delete i;
+void deleteNode(int maSV, List &ListSV){
+    if(ListSV.first == NULL) return;
+    if(ListSV.first->data.maSV == maSV){
+        Node* temp = ListSV.first;
+        ListSV.first = ListSV.first->next;
+        delete temp;
+        return;
+    }
+    Node* prev = ListSV.first;
+    Node* curr = ListSV.first->next;
+    while(curr != NULL){
+        if(curr->data.maSV == maSV){
+            prev->next = curr->next;
+            delete curr;
             return;
         }
-        prev = i;
+        prev = curr;
+        curr = curr->next;
     }
+    cout << "Khong tim thay sinh vien co ma SV: " << maSV << endl;
 }
-
+void xoaCungNgaySinh(List &ListSV){
+    bool found = false;
+    for (Node* i = ListSV.first; i != NULL;){
+        for (Node* j = i->next; j != NULL; j = j->next){
+            if (sameDate(i->data.ngaySinh, j->data.ngaySinh)){
+                deleteNode(j->data.maSV, ListSV);
+                found = true;
+            }
+        }
+        if(found){
+            Node* temp = i;
+            i = i->next;
+            deleteNode(temp->data.maSV, ListSV);
+            found = false;
+        }
+        else i = i->next;
+    }
+    cout << "Da xoa cac sinh vien cung ngay sinh.\n";
+}
 int main(){
 	struct List ListSV[100];
 }
